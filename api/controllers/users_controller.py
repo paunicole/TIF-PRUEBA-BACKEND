@@ -92,5 +92,4 @@ class UserController:
         print("Desde controlador: ", user.__dict__)
 
         User.updateUser(user)
-
         return {"message":"Id actualizado"}, 200

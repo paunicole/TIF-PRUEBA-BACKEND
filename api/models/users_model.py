@@ -105,16 +105,17 @@ class User:
 
     @classmethod
     def updateUser(cls, user):
-        print("desde el modelo ->", user.__dict__)
+        # print("desde el modelo ->", user.__dict__)
         query ="""
         UPDATE
             discord.users
         SET
+            email = %(email)s,
             username = %(username)s,
             first_name = %(first_name)s,
             last_name = %(last_name)s
         WHERE
-            email = %(email)s
+            user_id = %(user_id)s
         """
         params = user.__dict__
         DatabaseConnection.execute_query(query, params=params)
