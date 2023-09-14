@@ -102,19 +102,21 @@ class User:
                 params= user.__dict__
             DatabaseConnection.execute_query(sql, params=params)
             return ""
-            
-            
-    @classmethod
-    def updateUser(cls,user):
-        #UPDATE tabla SET campo = valor, campo2 = ‘valor2’ [WHERE <condicion>];
-        password=user.password
-        print("desde el modelo ->",user.__dict__)
 
-        # query="""UPDATE discord.users SET email= %(email)s WHERE password= %(password)s"""
-        # params=user.__dict__
-        # DatabaseConnection.execute_query(query,params)
-        first_name=user.first_name
-        query="UPDATE discord.users SET users.first_name= {0} WHERE users.password= {0}".format(first_name,password)
-        DatabaseConnection.execute_query(query)
+    @classmethod
+    def updateUser(cls, user):
+        print("desde el modelo ->", user.__dict__)
+        query ="""
+        UPDATE
+            discord.users
+        SET
+            username = %(username)s,
+            first_name = %(first_name)s,
+            last_name = %(last_name)s
+        WHERE
+            email = %(email)s
+        """
+        params = user.__dict__
+        DatabaseConnection.execute_query(query, params=params)
 
 #Ctrl+Alt+t Ctrl+Alt+l

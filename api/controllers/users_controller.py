@@ -24,9 +24,10 @@ class UserController:
     @classmethod
     def show_profile(cls):
         """va y busca al usuario y trae sus datos"""
+        print("Hola soy show_profile")
         username = session.get('username')
         user = User.get(User(username = username))
-        # print("Desde show_profile",user.serialize())
+        print("Desde show_profile", user.__dict__)
 
         if user is None:
             return {"message": "Usuario no encontrado"}, 404
@@ -83,11 +84,13 @@ class UserController:
             return {"message":UsernameExists("Este user ya existe!!").serialize()},400
         else:
             return {"message":"todo en orden"},200
-           
+
     @classmethod
     def update(cls):
-        data=request.json
+        data = request.json
         user=User(**data)
-        print("Desde udate--------->",user)
+        print("Desde controlador: ", user.__dict__)
+
         User.updateUser(user)
-        return {"message":"Id actualizao"},200
+
+        return {"message":"Id actualizado"}, 200
