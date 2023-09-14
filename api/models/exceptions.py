@@ -61,4 +61,11 @@ class UsernameExists(Exception):
                     "name": self.name,
                     "description": self.description,
         }
-    
+
+
+class ServerError(CustomException):
+
+    def __init__(self, description = "Error en la base de datos"):
+        super().__init__(500, "Server Error", description)
+        self.description = description
+        self.status_code = 500

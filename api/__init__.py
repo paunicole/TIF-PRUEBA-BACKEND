@@ -3,6 +3,7 @@ from flask_cors import CORS
 from config import Config
 
 from .routes.user_bp import user_bp
+from .routes.message_bp import message_bp
 from .routes.error_handlers import errors
 
 from .database import DatabaseConnection
@@ -21,6 +22,7 @@ def init_app():
     DatabaseConnection.set_config(app.config)
 
     app.register_blueprint(user_bp, url_prefix = '/users')
+    app.register_blueprint(message_bp, url_prefix = '/messages')
 
     app.register_blueprint(errors, url_prefix = '/errors')
 
