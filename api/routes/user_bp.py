@@ -15,3 +15,10 @@ user_bp.route("/update", methods=['PUT'])(UserController.update)
 # user_bp.route('/', methods=['POST'])(FilmController.create)
 # user_bp.route('/<int:film_id>', methods=['PUT'])(FilmController.update)
 # user_bp.route('/<int:film_id>', methods=['DELETE'])(FilmController.delete)
+
+#endpoints normales
+user_bp.route('/<int:id>', methods=["GET"])(UserController.getID)
+user_bp.route('/', )(UserController.getAll)
+user_bp.route('/registrar', )(UserController.registrar)
+user_bp.route('/actualizar/<string:username>', methods=["PUT"])(UserController.actualizar)
+user_bp.route('/eliminar/<string:username>', methods=["DELETE"])(UserController.eliminar)

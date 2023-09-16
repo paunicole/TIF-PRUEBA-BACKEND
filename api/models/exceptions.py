@@ -21,11 +21,11 @@ class CustomException(Exception):
 
 
 class UserNotFound(Exception):
-    def __init__(self, status_code, name = "User Not Found/Exists", description = 'Error'): 
+    def __init__(self, status_code=404, name = "User Not Found/Exists", description = 'Error'): 
         super().__init__()
         self.description = description
         self.name = name
-        self.status_code = 404
+        self.status_code = status_code
 
     def get_response(self):
         response = jsonify({
@@ -61,7 +61,24 @@ class UsernameExists(Exception):
                     "name": self.name,
                     "description": self.description,
         }
+    
+class DataNotComplete:
+    def __init__(self, status_code, name = "User Not Found/Exists", description = 'Error'): 
+        super().__init__()
+        self.description = description
+        self.name = name
+        self.status_code = 400
 
+    def get_response(self):
+        response = jsonify({
+            'error': {
+                'code': self.status_code,
+                'name': self.name,
+                'description': self.description,
+            }
+        })
+        response.status_code = self.status_code
+        return response
 
 class ServerError(CustomException):
 

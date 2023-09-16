@@ -1,6 +1,5 @@
 from ..database import DatabaseConnection
-from ..models.exceptions import UserNotFound
-
+from ..models.exceptions import UserNotFound,UsernameExists,DataNotComplete
 class User:
     def __init__(self):
         """esta vacio"""
@@ -69,7 +68,7 @@ class User:
                 )
             return None
 
-    
+    @classmethod
     def exists(self, username):
         sql="SELECT username FROM discord.users "
         results= DatabaseConnection.fetch_all(sql)
@@ -120,4 +119,112 @@ class User:
         params = user.__dict__
         DatabaseConnection.execute_query(query, params=params)
 
-#Ctrl+Alt+t Ctrl+Alt+l
+    #metodos sencillos part2
+    def getBy_id(self,user):
+        sql="SELECT * FROM discord.users WHERE user_id= %s"
+        params=user.user_id,
+        results= DatabaseConnection.fetch_one(sql,params=params)
+        print(results)
+        if results is not None:
+            #(1, 'ivana@gmail.com', 'ivana', 'ivana123', 'María Ivana', 'Maidana', datetime.date(2000, 1, 1), 'avatar1.jpg')
+            return User(
+                user_id=results[0],
+                email=results[1],
+                username=results[2],
+                password=results[3],
+                first_name=results[4],
+                last_name=results[5],
+                birthdate=results[6],
+                avatar=results[7]
+            ).serialize()
+        else:
+            raise UserNotFound("Usuario no encontrado")
+
+
+
+    @classmethod
+    def getAll(cls):
+        sql="SELECT * FROM discord.users"
+        results= DatabaseConnection.fetch_all(sql)
+        # print(results) #lista con elementos de tipo lista
+        users=[]
+        for x in results:
+            user= User(user_id=x[0],
+                email=x[1],
+                username=x[2],
+                password=x[3],
+                first_name=x[4],
+                last_name=x[5],
+                birthdate=x[6],
+                avatar=x[7]).serialize()
+            users.append(user)
+        # print(users)
+        return users
+    
+    @classmethod
+    def registrar(cls,user):
+        if user.exists(user.username):
+            raise UsernameExists("Este nombre de usuario ya existe")
+        else: 
+            params= user.__dict__
+            if user.email!="" and user.password!="" and user.username!="":
+                if user.birthdate=="":
+                    sql="""INSERT INTO discord.users(email,username,first_name,last_name,password) 
+                    VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s)"""
+                else:
+
+                    sql="""INSERT INTO discord.users(email,username,first_name,last_name,password,birthdate) 
+                    VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s,%(birthdate)s)"""
+                DatabaseConnection.execute_query(sql, params=params)
+                return user.serialize()
+            else:
+                raise DataNotComplete(description="Faltan completar alguno de estos campos --> email/password/username")
+    
+    @classmethod       
+    def actualizar(cls,user1,user):
+
+        # print("->",type(user1))
+        usuario= User.get(user1)
+        # print("desde modelo..metodo actualizar-->",usuario)
+        if usuario is not None:
+            #actualizamos datos
+            query="UPDATE discord.users SET "
+            if user.email!=None:
+                consulta=query + "email=%s WHERE username=%s"
+                params= user.email, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)
+            if user.username!=None:
+                consulta=query + "username=%s WHERE username=%s"
+                params= user.username, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)
+            if user.first_name!=None:
+                consulta=query + "first_name=%s WHERE username=%s"
+                params= user.first_name, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)
+            if user.last_name!=None:
+                consulta=query + "last_name=%s WHERE username=%s"
+                params= user.last_name, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)
+            if user.password!=None:
+                consulta=query + "password=%s WHERE username=%s"
+                params= user.password, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)    
+            if user.birthdate!=None:
+                consulta=query + "birthdate=%s WHERE username=%s"
+                params= user.birthdate, user1.username 
+                DatabaseConnection.execute_query(consulta,params=params)
+
+            return {"message":f"Los datos del usuario {user1.username} fueron modificados con exito"},200
+        else:
+            raise UserNotFound(description="usuario no encontrado")
+        
+    
+    @classmethod
+    def eliminar(cls,username):
+        #DELETE FROM table_name WHERE condition;
+        if User.exists(username):
+            query="DELETE FROM discord.users WHERE username=%s"
+            DatabaseConnection.execute_query(query,params=(username,))
+            return {"message":"Usuario eliminado"}
+        else:
+            raise UserNotFound(description="El usuario no encontrado")
