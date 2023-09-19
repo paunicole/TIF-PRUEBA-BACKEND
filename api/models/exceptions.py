@@ -86,3 +86,13 @@ class ServerError(CustomException):
         super().__init__(500, "Server Error", description)
         self.description = description
         self.status_code = 500
+
+class BadRequest(CustomException):
+
+    def __init__(self, description = 'Solcitud inválida'):
+        super().__init__(400, name = "Bad Request", description = description)
+    
+class NotFound(CustomException):
+
+    def __init__(self, description = 'Recurso no encontrado'):
+        super().__init__(404, name = "Not Found", description = description)

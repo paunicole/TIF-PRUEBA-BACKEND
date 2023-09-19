@@ -21,7 +21,7 @@ class DatabaseConnection:
         cls._config = config
     
     @classmethod
-    def execute_query(cls, query, database_name=None, params=None):
+    def execute_query(cls, query, params=None):
         cursor = cls.get_connection().cursor()
         cursor.execute(query, params)
         cls._connection.commit()
@@ -29,13 +29,13 @@ class DatabaseConnection:
         return cursor
     
     @classmethod
-    def fetch_all(cls, query, database_name=None, params=None):
+    def fetch_all(cls, query, params=None):
         cursor = cls.get_connection().cursor()
         cursor.execute(query, params)
         return cursor.fetchall()
     
     @classmethod
-    def fetch_one(cls, query, database_name=None, params=None):
+    def fetch_one(cls, query, params=None):
         cursor = cls.get_connection().cursor()
         cursor.execute(query, params)
         
