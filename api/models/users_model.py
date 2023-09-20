@@ -77,7 +77,8 @@ class User:
         existe=False
         for n in results:
             for x in n:
-                if x==username: 
+                if x.lower()==username.lower():
+                    # print(x.lower(),"---------",username.lower()) 
                     existe=True  
         # print(existe)
         return existe
@@ -89,13 +90,11 @@ class User:
         if user.exists(user.username):
             return None
         else: 
-            params=None
+            params= user.__dict__
             if user.birthdate=="":
                 sql="""INSERT INTO discord.users(email,username,first_name,last_name,password) 
                 VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s)"""
-                params= user.__dict__
             else:
-
                 sql="""INSERT INTO discord.users(email,username,first_name,last_name,password,birthdate) 
                 VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s,%(birthdate)s)"""
                 params= user.__dict__

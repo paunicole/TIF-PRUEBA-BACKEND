@@ -34,15 +34,7 @@ class UserController:
         else:
             return user.serialize(), 200
         
-    @classmethod
-    def welcome(cls):
-        username = session.get('username')
-        user = User.get(User(username = username))
-        print("Desde welcome",user.serialize())
-        if user is None:
-            return {"message": "Usuario no encontrado"}, 404
-        else:
-            return user.serialize(), 200
+    
         
     @classmethod
     def logout(cls):
@@ -66,18 +58,10 @@ class UserController:
         data=request.json
         print("Json desde Formulario--->",data)
         
-        if "birthdate" in data:
-            fecha_nac= str(data.get("birthdate")) #2000-02-10 (año, mes , dia)
-        
-            print(fecha_nac) #por defecto ---> Año-Mes-Dia
-            if fecha_nac == "":
-                data["birthdate"]=None
-                #print(type(fecha_nac))#<class 'datetime.datetime'>
-            else:
-                fecha_nac= dt.datetime.fromisoformat(fecha_nac)
-                data["birthdate"]=fecha_nac
+        fecha_nac= dt.datetime.fromisoformat(str(data.get("birthdate")))
+        data["birthdate"]=fecha_nac
         user=User(**data)
-        print("\nUser:",user.serialize())
+        # print("\nUser:",user.serialize())
 
         if User.createUser(user) is None:
             # raise UsernameExists("Este user ya existe!!")
