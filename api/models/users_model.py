@@ -1,6 +1,9 @@
 from ..database import DatabaseConnection
 from ..models.exceptions import UserNotFound,UsernameExists,DataNotComplete
+
 class User:
+    """Clase que representa un Usuario."""
+
     def __init__(self):
         """esta vacio"""
 
