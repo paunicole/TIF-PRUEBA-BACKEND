@@ -80,15 +80,10 @@ class User:
             return None
         else: 
             params= user.__dict__
-            if user.birthdate=="":
-                sql="""INSERT INTO discord.users(email,username,first_name,last_name,password) 
-                VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s)"""
-            else:
-                sql="""INSERT INTO discord.users(email,username,first_name,last_name,password,birthdate) 
-                VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s,%(birthdate)s)"""
-                params= user.__dict__
+            sql="""INSERT INTO discord.users(email,username,first_name,last_name,password,birthdate,avatar) 
+                VALUES(%(email)s,%(username)s,%(first_name)s,%(last_name)s,%(password)s,%(birthdate)s,%(avatar)s)"""
             DatabaseConnection.execute_query(sql, params=params)
-            return ""
+            return {"message":"User creado con exito!"},200
 
     @classmethod
     def updateUser(cls, user):

@@ -19,7 +19,7 @@ class UserController:
         #comprueba si existe el usuario, por el nombre y la contraseña
         if User.is_registered(user):
             session['username'] = data.get('username')#guarda el nombre_de usuario
-            return {"message": "Sesion iniciada"}, 200
+            return user.serialize(), 200
         else:
             return {"message": "Usuario o contraseña incorrectos"}, 401
     
@@ -64,13 +64,10 @@ class UserController:
         data["birthdate"]=fecha_nac
         user=User(**data)
         # print("\nUser:",user.serialize())
-
-        if User.createUser(user) is None:
-            # raise UsernameExists("Este user ya existe!!")
+        value=User.createUser(user)
+        if value is None:
             return {"message":UsernameExists("Este user ya existe!!").serialize()},400
-        else:
-            return {"message":"todo en orden"},200
-
+        return value
     @classmethod
     def update(cls):
         data = request.json
@@ -107,9 +104,11 @@ class UserController:
         last_name= request.args.get("last_name") 
         password= request.args.get("password")
         birthdate= request.args.get("birthdate")
+        avatar= request.args.get("avatar")
 
         print("Registrando usuario....(por query params)")
-        user=User(username=username,email=email,last_name=last_name,password=password, birthdate=birthdate)
+        user=User(username=username,email=email,first_name=first_name,last_name=last_name,password=password, birthdate=birthdate,avatar=avatar)
+        
         return User.registrar(user)
     
     @classmethod
@@ -123,25 +122,11 @@ class UserController:
         last_name= request.args.get("last_name") 
         password= request.args.get("password")
         birthdate= request.args.get("birthdate")
-        print(birthdate)        
+        # print(birthdate)        
 
-        user=User()
-        try:
-           
-            if birthdate !="" and birthdate!=None:
-                birthdate= dt.datetime.fromisoformat(birthdate)
-                # print("cumple",birthdate)
-
-                user=User(username=name_usuario,email=email,first_name=first_name,last_name=last_name,password=password, birthdate=birthdate)
-            else:
-                user=User(username=name_usuario,email=email,first_name=first_name,last_name=last_name,password=password)
+        user=User(username=name_usuario,email=email,first_name=first_name,last_name=last_name,password=password,birthdate=birthdate)
   
-        except ValueError:
-            print("La fecha ingresada es Invalida, por favor siga este ejemplo -> YYYY-MMM-DD (Y=year/M=month/D=day)")
-        except Exception as err:
-            # return f"La fecha ingresaa es Invalid "
-            #return ("La fecha ingresaa es Invalida, por favor siga este ejemplo -> YYYY-MMM-DD (Y=year) (M=month) (D=day)  ")
-            return (f"Unexpected {err=}, {type(err)=}")
+        
         
         return User.actualizar(user1,user)
         
