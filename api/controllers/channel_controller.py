@@ -4,6 +4,7 @@ from flask import request
 from ..models.exceptions import NotFound, BadRequest
 
 class ChannelController:
+    """Clase de controlador de canales."""
 
     @classmethod
     def get(cls):
