@@ -1,5 +1,5 @@
 from ..database import DatabaseConnection
-from ..models.exceptions import UserNotFound,UsernameExists,DataNotComplete
+from ..models.exceptions import UserNotFound, UsernameExists, DataNotComplete
 
 class User:
     """Clase que representa un Usuario."""
@@ -17,16 +17,6 @@ class User:
         self.birthdate = kwargs.get('birthdate')
         self.avatar=kwargs.get("avatar")
 
-    # def __init__(self,user_id=None, email=None,username=None,firstname=None,last_name=None,password=None,date_of_birth=None,avatar=None):
-    #     self.user_id =user_id
-    #     self.email = email
-    #     self.username = username
-    #     self.first_name = firstname
-    #     self.last_name = last_name
-    #     self.password = password
-    #     self.date_of_birth = date_of_birth
-    #     self.avatar=avatar
-    
     def serialize(self):
         return {
             "user_id": self.user_id,
@@ -34,10 +24,11 @@ class User:
             "username": self.username,
             "first_name": self.first_name,
             "last_name": self.last_name,
-            "password": self.password
-            ,"birthdate": self.birthdate
-            # , "avatar":self.avatar
+            "password": self.password,
+            "birthdate": self.birthdate,
+            "avatar": self.avatar
         }
+    
     @classmethod
     def is_registered(cls, user):
         query = """SELECT user_id FROM discord.users 
@@ -53,7 +44,7 @@ class User:
     def get(cls,user):  
 
         if user.exists(user.username):
-            sql="""SELECT user_id,email,username,first_name,last_name, password, birthdate FROM discord.users
+            sql="""SELECT user_id, email, username, first_name, last_name, password, birthdate, avatar FROM discord.users
             WHERE users.username=%(username)s"""
             params = user.__dict__
             result = DatabaseConnection.fetch_one(sql, params=params)
@@ -61,13 +52,13 @@ class User:
             if result is not None:
                 return cls(
                     user_id = result[0],
-                    email= result[1],
+                    email = result[1],
                     username = result[2],  
                     first_name = result[3],
-                    last_name=result[4],
-                    password= result[5],
-                    birthdate = result[6]
-                    # , avatar= result[7]
+                    last_name =result[4],
+                    password = result[5],
+                    birthdate = result[6],
+                    avatar = result[7]
                 )
             return None
 
@@ -76,20 +67,15 @@ class User:
         sql="SELECT username FROM discord.users "
         results= DatabaseConnection.fetch_all(sql)
 
-        # print(result) [('ivana',), ('nicole',), ('alberto',), ('pablo',), ('luffy',), ('Master',), ('luffy',)]s
         existe=False
         for n in results:
             for x in n:
                 if x.lower()==username.lower():
-                    # print(x.lower(),"---------",username.lower()) 
                     existe=True  
-        # print(existe)
         return existe
 
     @classmethod
     def createUser(cls,user):
-        # cls.get(user)
-
         if user.exists(user.username):
             return None
         else: 
@@ -106,7 +92,6 @@ class User:
 
     @classmethod
     def updateUser(cls, user):
-        # print("desde el modelo ->", user.__dict__)
         query ="""
         UPDATE
             discord.users

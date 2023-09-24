@@ -64,3 +64,34 @@ class Server:
                         admin_user=result[3]
                     ))
             return servers
+    
+    @classmethod
+    def get_server_user(cls, usuario):
+        """Funcion que retorna los servidores de un usuario de la base de datos."""
+        try:                 
+            query="""
+            SELECT
+                name
+            FROM
+                discord.servers
+            JOIN
+                discord.server_user
+            ON
+                server_user.server_id = servers.server_id 
+            JOIN
+                discord.users
+            ON
+                users.user_id = server_user.user_id
+            WHERE
+                users.username = %(username)s;
+            """
+            print("USUARIOOO", usuario.username)
+            params = usuario.__dict__
+            result = DatabaseConnection.fetch_all(query, params=params)
+            if result is not None:
+                DatabaseConnection.close_connection()
+                return cls(nombre_servidor = result)
+            DatabaseConnection.close_connection()
+            return None
+        except Exception as e:
+            raise Exception(e)

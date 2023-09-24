@@ -3,6 +3,7 @@ from .server_model import Server
 
 class Channel:
     """Clase que representa un canal."""
+    
     _keys = ('channel_id', 'name', 'description', 'server_id')
 
     def __init__(self, **kwargs):

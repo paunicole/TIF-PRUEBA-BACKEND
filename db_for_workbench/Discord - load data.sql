@@ -3,10 +3,10 @@ USE discord;
 INSERT INTO discord.servers (name, description, admin_user) VALUES ('Literatura Fantástica', 'Descripción del servidor 1', 1);
 INSERT INTO discord.servers (name, description, admin_user) VALUES ('Programación Web', 'Descripción del servidor 2', 2);
 
-INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('ivana@gmail.com', 'ivana', 'ivana123', 'María Ivana', 'Maidana', '2000-01-01', 'avatar1.jpg');
-INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('nicole@gmail.com', 'nicole', 'nicole123', 'Paula Nicole', 'Cardozo Gómez', '2000-02-02', 'avatar2.jpg');
-INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('beto@gmail.com', 'beto', 'beto123', 'Alberto', 'Pallares', '2000-03-03', 'avatar3.jpg');
-INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('pablo@gmail.com', 'pablo', 'pablo123', 'Pablo', 'Rodriguez', '2000-03-03', 'avatar4.jpg');
+INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('ivana@gmail.com', 'ivana', 'ivana123', 'María Ivana', 'Maidana', '2000-01-01', 'avatar1.png');
+INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('nicole@gmail.com', 'nicole', 'nicole123', 'Paula Nicole', 'Cardozo Gómez', '2000-02-02', 'avatar1.png');
+INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('beto@gmail.com', 'beto', 'beto123', 'Alberto', 'Pallares', '2000-03-03', 'avatar2.png');
+INSERT INTO discord.users (email, username, password, first_name, last_name, birthdate, avatar) VALUES ('pablo@gmail.com', 'pablo', 'pablo123', 'Pablo', 'Rodriguez', '2000-03-03', 'avatar2.png');
 
 INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 1);
 INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 2);

@@ -1,6 +1,6 @@
 from ..models.users_model import User 
 from ..models.exceptions import UserNotFound,UsernameExists
-from flask import request,session,jsonify
+from flask import request, session, jsonify
 import datetime as dt
 
 class UserController:
@@ -10,7 +10,7 @@ class UserController:
     def login(cls):
         """del login trae un objeto json"""
         data = request.json
-        # print("Desde login_controller",data)
+        print("Desde login_controller",data)
         user = User(
             username = data.get('username'),
             password = data.get('password')
@@ -149,3 +149,11 @@ class UserController:
     def eliminar(cls,username):
         # user=User(username=username)
         return User.eliminar(username)
+    
+    @classmethod
+    def get_servers_user(cls):
+        if 'username' in session:
+            print("SIIII")
+        else:
+            print("NOOO")
+        #print("USUARIOOO desde users: ", session.get('username'))

@@ -1,8 +1,9 @@
 from ..models.server_model import Server
-from flask import request
+from ..models.users_model import User
+from flask import request, session
 
 class ServerController:
-    """Clase de controlador de servidores"""
+    """Clase de controlador de servidores."""
 
     @classmethod
     def get_servers(self):
@@ -20,3 +21,12 @@ class ServerController:
         Server.create_server(server_obj)
 
         return {}, 201
+    
+    @classmethod 
+    def get_servers_user(cls, username):
+        servers = Server.get_server_user(User(username = username))
+        
+        if servers is not None:
+            return servers.serialize(), 200
+        else:
+            return {'msg':'Únete a un servidor'}, 404

@@ -2,7 +2,7 @@ from ..models.message_model import Message
 from flask import request
 
 class MessageController:
-    """Clase de controlador de mensajes"""
+    """Clase de controlador de mensajes."""
 
     @classmethod
     def get_message(self, message_id):
@@ -12,6 +12,7 @@ class MessageController:
     
     @classmethod
     def get_messages(self):
+        print("LLEGO A GET_MESSAGES")
         message_objects = Message.get_messages()
         messages = []
         for message in message_objects:

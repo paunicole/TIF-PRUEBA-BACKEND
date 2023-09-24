@@ -37,18 +37,20 @@ class Message:
         return None
     
     @classmethod
-    def get_messages(cls):
-        query = """SELECT message_id, message, date_time, user_id, channel_id FROM discord.messages"""
-        results = DatabaseConnection.fetch_all(query)
-        message_list = []
-        for result in results:
-            message_list.append(Message(
-                message_id = result[0],
-                message = result[1],
-                date_time = result[2],
-                user_id = result[3],
-                channel_id = result[4]
-            ))
+    def get_messages(cls, channel=None):
+        if channel:
+            query = """SELECT message_id, message, date_time, user_id, channel_id FROM discord.messages WHERE channel_id = %s"""
+            params = (channel.channel_id,)
+            results = DatabaseConnection.fetch_all(query, params=params)
+            message_list = []
+            for result in results:
+                message_list.append(Message(
+                    message_id = result[0],
+                    message = result[1],
+                    date_time = result[2],
+                    user_id = result[3],
+                    channel_id = result[4]
+                ))
         return message_list
 
     @classmethod
