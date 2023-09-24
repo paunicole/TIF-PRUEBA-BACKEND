@@ -4,6 +4,8 @@ from flask import request,session,jsonify
 import datetime as dt
 
 class UserController:
+    """Clase de controlador de usuarios."""
+
     @classmethod
     def login(cls):
         """del login trae un objeto json"""
