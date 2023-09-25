@@ -72,7 +72,7 @@ class UserController:
     def update(cls):
         data = request.json
         user=User(**data)
-        print("Desde controlador: ", user.__dict__)
+        # print("update....: ", user.__dict__)
 
         User.updateUser(user)
         return {"message":"User actualizado"}, 200

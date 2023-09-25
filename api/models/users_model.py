@@ -87,6 +87,7 @@ class User:
 
     @classmethod
     def updateUser(cls, user):
+        # birthdate = %(birthdate)s,
         query ="""
         UPDATE
             discord.users
@@ -94,7 +95,8 @@ class User:
             email = %(email)s,
             username = %(username)s,
             first_name = %(first_name)s,
-            last_name = %(last_name)s
+            last_name = %(last_name)s,
+            avatar = %(avatar)s
         WHERE
             user_id = %(user_id)s
         """
