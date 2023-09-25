@@ -1,4 +1,5 @@
 from ..database import DatabaseConnection
+from .users_model import User
 from .exceptions import ServerError
 
 class Message:
@@ -17,6 +18,15 @@ class Message:
             "message": self.message,
             "date_time": self.date_time, 
             "user_id": self.user_id,
+            "channel_id": self.channel_id
+        }
+
+    def serialize2(self):
+        return {
+            "message_id": self.message_id,
+            "message": self.message,
+            "date_time": self.date_time, 
+            "user_id": User.get_id_user(User(user_id=self.user_id)).serialize() if self.user_id else None,
             "channel_id": self.channel_id
         }
 

@@ -20,7 +20,7 @@ class MessageController:
         else:
             print("SEGUNDO GET")
             messages = Message.get_messages()
-        return [message.serialize() for message in messages], 200
+        return [message.serialize2() for message in messages], 200
 
     # @classmethod
     # def get_messages(self):

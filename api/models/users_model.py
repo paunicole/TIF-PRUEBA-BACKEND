@@ -103,6 +103,27 @@ class User:
         params = user.__dict__
         DatabaseConnection.execute_query(query, params=params)
 
+    @classmethod
+    def get_id_user(cls, user = None):
+        """"Retorna el usuario con el ID pasado por parámetro. (Para chat.js)"""
+        if user and user.user_id:
+            print("ENTRA POR SI USER Y SI USER.USER_ID", user.user_id)
+            query = "SELECT * FROM discord.users WHERE user_id = %s"
+            params = (user.user_id,)
+            result = DatabaseConnection.fetch_one(query, params)
+            if result is not None:
+                return cls(
+                        user_id = result[0],
+                        email = result[1],
+                        username = result[2],  
+                        first_name = result[3],
+                        last_name =result[4],
+                        password = result[5],
+                        birthdate = result[6],
+                        avatar = result[7]
+                    )
+            return None
+
     #metodos sencillos part2
     def getBy_id(self,user):
         sql="SELECT * FROM discord.users WHERE user_id= %s"
