@@ -36,8 +36,6 @@ class UserController:
         else:
             return user.serialize(), 200
         
-    
-        
     @classmethod
     def logout(cls):
         """cierra a session"""
@@ -68,6 +66,7 @@ class UserController:
         if value is None:
             return {"message":UsernameExists("Este user ya existe!!").serialize()},400
         return value
+    
     @classmethod
     def update(cls):
         data = request.json
@@ -81,7 +80,7 @@ class UserController:
     def delete(cls):
         """"""
 
-        #metodos sencillos
+    #metodos sencillos
     @classmethod
     def getID(cls,id):
         """retorna los datos de un id pasado por path params"""
@@ -125,9 +124,7 @@ class UserController:
         # print(birthdate)        
 
         user=User(username=name_usuario,email=email,first_name=first_name,last_name=last_name,password=password,birthdate=birthdate)
-  
-        
-        
+
         return User.actualizar(user1,user)
         
     @classmethod

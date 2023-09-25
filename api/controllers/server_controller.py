@@ -15,18 +15,29 @@ class ServerController:
 
     @classmethod
     def create_server(self):
+        username = session.get('username')
+        user_obj = User.get(User(username=username))
+        admin_user = user_obj.user_id
         data = request.json
-        print("NOMBREEEE", data.get('name'), data.get('description'))
-        server_obj = Server(name=data.get('name'), description=data.get('description'))
+        server_obj = Server(name=data.get('name'), description=data.get('description'), admin_user=admin_user)
         Server.create_server(server_obj)
+
+        Server.create_us(admin_user)
 
         return {}, 201
     
-    @classmethod 
-    def get_servers_user(cls, username):
-        servers = Server.get_server_user(User(username = username))
+    @classmethod
+    def get_servers_user(cls):
+        print("Estoy en get_servers_user")
+        username = session.get('username')
+        user_obj = User.get(User(username=username))
+        print("OBJETO USER: ", user_obj.serialize())
+        server_obj = Server.get_server_user(user_obj)
         
+        servers = []
         if servers is not None:
-            return servers.serialize(), 200
+            for server in server_obj:
+                servers.append(server.serialize())
+            return servers, 200
         else:
             return {'msg':'Únete a un servidor'}, 404
