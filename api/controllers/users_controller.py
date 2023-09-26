@@ -70,9 +70,12 @@ class UserController:
     @classmethod
     def update(cls):
         data = request.json
+        if "birthdate" in data:
+            fecha_nac= dt.datetime.fromisoformat(str(data.get("birthdate")))
+            data["birthdate"]=fecha_nac
         user=User(**data)
-        # print("update....: ", user.__dict__)
-
+        # user.birthdate=""
+        print("update....: ", user.__dict__)
         User.updateUser(user)
         return {"message":"User actualizado"}, 200
     

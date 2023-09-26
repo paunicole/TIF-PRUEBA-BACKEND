@@ -96,19 +96,37 @@ class User:
     @classmethod
     def updateUser(cls, user):
         # birthdate = %(birthdate)s,
-        query ="""
-        UPDATE
-            discord.users
-        SET
-            email = %(email)s,
-            username = %(username)s,
-            first_name = %(first_name)s,
-            last_name = %(last_name)s,
-            avatar = %(avatar)s
-        WHERE
-            user_id = %(user_id)s
-        """
-        params = user.__dict__
+        user=user.serialize()
+        if user["birthdate"] is not None:
+            query ="""
+            UPDATE
+                discord.users
+            SET
+                email = %(email)s,
+                username = %(username)s,
+                first_name = %(first_name)s,
+                last_name = %(last_name)s,
+                birthdate = %(birthdate)s,
+                avatar = %(avatar)s
+            WHERE
+                user_id = %(user_id)s
+            """
+        else:
+            query ="""
+            UPDATE
+                discord.users
+            SET
+                email = %(email)s,
+                username = %(username)s,
+                first_name = %(first_name)s,
+                last_name = %(last_name)s,
+                avatar = %(avatar)s
+            WHERE
+                user_id = %(user_id)s
+            """
+        
+        params = user
+        # print("cumple ",user.birthdate)
         DatabaseConnection.execute_query(query, params=params)
 
     @classmethod
