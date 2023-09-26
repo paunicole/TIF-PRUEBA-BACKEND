@@ -49,41 +49,12 @@ class Server:
         DatabaseConnection.execute_query(query, params)
 
     @classmethod
-    def get_servers(self, server=None):
-        """Funcion que retorna todos los servidores de la base de datos en formato JSON"""
-        if server and server.server_id:
-            query = "SELECT server_id, name, description, admin_user FROM discord.servers WHERE server_id = %s"
-            params = (server.server_id,)
-            result = DatabaseConnection.fetch_one(query, params)
-            if result:
-                return Server(
-                    server_id = result[0],
-                    name = result[1],
-                    description = result[2],
-                    admin_user = result[3]
-                )
-            else:
-                return None
-        else:
-            query = "SELECT server_id, name, description, admin_user FROM discord.servers"
-            results = DatabaseConnection.fetch_all(query)
-            
-            servers = []
-            if results is not None:
-                for result in results:
-                    servers.append(Server(
-                        server_id=result[0],
-                        name=result[1],
-                        description=result[2],
-                        admin_user=result[3]
-                    ))
-            return servers
-    
-    @classmethod
-    def get_server_user(cls, user = None):
-        """Funcion que retorna los servidores de un usuario de la base de datos."""
+    def get_servers(self, user=None):
+        """Funcion que retorna todos los servidores o los servidores de un usuario en especidifco en formato JSON"""
         try:
-            if user and user.user_id:   
+            # Get servidores de un usuario
+            if user and user.username:
+                print(f"GET SERVERS BY USER {user.username}")
                 query="""
                 SELECT
                     servers.server_id, servers.name, servers.description, servers.admin_user
@@ -98,10 +69,10 @@ class Server:
                 ON
                     users.user_id = server_user.user_id
                 WHERE
-                    users.username = %(username)s;
-                """
+                    users.username = %(username)s;"""
                 params = user.__dict__
                 results = DatabaseConnection.fetch_all(query, params=params)
+                DatabaseConnection.close_connection()
                 servers = []
                 if results is not None:
                     for result in results:
@@ -111,7 +82,44 @@ class Server:
                             description=result[2],
                             admin_user=result[3]
                         ))
+                return servers
+            # Get servidores
+            else:
+                print("GET SERVERS")
+                query = "SELECT server_id, name, description, admin_user FROM discord.servers"
+                results = DatabaseConnection.fetch_all(query)
                 DatabaseConnection.close_connection()
+                servers = []
+                if results is not None:
+                    for result in results:
+                        servers.append(Server(
+                            server_id=result[0],
+                            name=result[1],
+                            description=result[2],
+                            admin_user=result[3]
+                        ))
                 return servers
         except Exception as e:
             raise Exception(e)
+
+    # @classmethod
+    # def get_server_user(cls, user = None):
+    #     """Funcion que retorna los servidores de un usuario de la base de datos."""
+    #     try:
+    #         if user and user.user_id:   
+                
+    #             params = user.__dict__
+    #             results = DatabaseConnection.fetch_all(query, params=params)
+    #             servers = []
+    #             if results is not None:
+    #                 for result in results:
+    #                     servers.append(Server(
+    #                         server_id=result[0],
+    #                         name=result[1],
+    #                         description=result[2],
+    #                         admin_user=result[3]
+    #                     ))
+    #             DatabaseConnection.close_connection()
+    #             return servers
+    #     except Exception as e:
+    #         raise Exception(e)

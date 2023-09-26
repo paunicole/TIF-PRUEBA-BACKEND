@@ -9,13 +9,15 @@ class ChannelController:
     @classmethod
     def get(cls):
         channels = []
+        # Get canales por servidor
         if request.args.get('server_id'):
             channel_obj = Channel(server_id=request.args.get('server_id'))
-            print("CHANNEL OBJ:", channel_obj.channel_id, channel_obj.name, channel_obj.server_id)
             channels = Channel.get(channel_obj)
-        else:
-            print("SEGUNDO GET")
+        
+        # Get canales todos
+        else:       
             channels = Channel.get()
+        
         return [channel.serialize() for channel in channels], 200
 
     @classmethod
@@ -37,10 +39,10 @@ class ChannelController:
             server_id=data.get('server_id')
             )
         Channel.create(channel_obj)
-        return {'message': 'Channel created successfully'}, 201
+        return {'message': 'Canal creado con éxito'}, 201
 
     @classmethod
     def delete(cls, channel_id):
         channel_obj = Channel(channel_id=channel_id)
         Channel.delete(channel_obj)
-        return {'message': 'Channel deleted successfully'}, 200
+        return {'message': 'Canal eliminado con éxito'}, 200
