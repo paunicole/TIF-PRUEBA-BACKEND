@@ -41,38 +41,46 @@ class User:
         return False
     
     @classmethod
-    def get(cls,user):  
+    def get(cls, user):  
+        try:
+            if user.exists(user.username):
+                sql="""SELECT user_id, email, username, first_name, last_name, password, birthdate, avatar FROM discord.users
+                WHERE users.username=%(username)s"""
+                params = user.__dict__
+                result = DatabaseConnection.fetch_one(sql, params=params)
 
-        if user.exists(user.username):
-            sql="""SELECT user_id, email, username, first_name, last_name, password, birthdate, avatar FROM discord.users
-            WHERE users.username=%(username)s"""
-            params = user.__dict__
-            result = DatabaseConnection.fetch_one(sql, params=params)
-
-            if result is not None:
-                return cls(
-                    user_id = result[0],
-                    email = result[1],
-                    username = result[2],  
-                    first_name = result[3],
-                    last_name =result[4],
-                    password = result[5],
-                    birthdate = result[6],
-                    avatar = result[7]
-                )
-            return None
+                if result is not None:
+                    return cls(
+                        user_id = result[0],
+                        email = result[1],
+                        username = result[2],  
+                        first_name = result[3],
+                        last_name =result[4],
+                        password = result[5],
+                        birthdate = result[6],
+                        avatar = result[7]
+                    )
+                DatabaseConnection.close_connection()
+                return None
+        except Exception as e:
+            raise Exception(e)
+            
 
     @classmethod
     def exists(self, username):
-        sql="SELECT username FROM discord.users "
-        results= DatabaseConnection.fetch_all(sql)
+        try:
+            sql="SELECT username FROM discord.users "
+            results= DatabaseConnection.fetch_all(sql)
 
-        existe=False
-        for n in results:
-            for x in n:
-                if x.lower()==username.lower():
-                    existe=True  
-        return existe
+            existe=False
+            for n in results:
+                for x in n:
+                    if x.lower()==username.lower():
+                        existe=True  
+            DatabaseConnection.close_connection()
+            return existe
+        except Exception as e:
+            raise Exception(e)
 
     @classmethod
     def createUser(cls,user):
@@ -107,7 +115,6 @@ class User:
     def get_id_user(cls, user = None):
         """"Retorna el usuario con el ID pasado por parámetro. (Para chat.js)"""
         if user and user.user_id:
-            print("ENTRA POR SI USER Y SI USER.USER_ID", user.user_id)
             query = "SELECT * FROM discord.users WHERE user_id = %s"
             params = (user.user_id,)
             result = DatabaseConnection.fetch_one(query, params)
@@ -131,7 +138,6 @@ class User:
         results= DatabaseConnection.fetch_one(sql,params=params)
         print(results)
         if results is not None:
-            #(1, 'ivana@gmail.com', 'ivana', 'ivana123', 'María Ivana', 'Maidana', datetime.date(2000, 1, 1), 'avatar1.jpg')
             return User(
                 user_id=results[0],
                 email=results[1],
@@ -145,25 +151,21 @@ class User:
         else:
             raise UserNotFound("Usuario no encontrado")
 
-
-
     @classmethod
     def getAll(cls):
         sql="SELECT * FROM discord.users"
         results= DatabaseConnection.fetch_all(sql)
-        # print(results) #lista con elementos de tipo lista
-        users=[]
+        users = []
         for x in results:
-            user= User(user_id=x[0],
-                email=x[1],
-                username=x[2],
-                password=x[3],
-                first_name=x[4],
-                last_name=x[5],
-                birthdate=x[6],
-                avatar=x[7]).serialize()
+            user = User(user_id=x[0],
+                        email =x[1],
+                        username=x[2],
+                        password=x[3],
+                        first_name=x[4],
+                        last_name=x[5],
+                        birthdate=x[6],
+                        avatar=x[7]).serialize()
             users.append(user)
-        # print(users)
         return users
     
     @classmethod

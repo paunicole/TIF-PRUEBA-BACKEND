@@ -11,6 +11,7 @@ class Config:
     DATABASE_PASSWORD = config['DATABASE_PASSWORD']
     DATABASE_HOST = config['DATABASE_HOST']
     DATABASE_PORT = config['DATABASE_PORT']
+    DATABASE_NAME = config['DATABASE_NAME']
 
     TEMPLATE_FOLDER = "templates/"
     STATIC_FOLDER = "static/"

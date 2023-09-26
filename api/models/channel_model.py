@@ -34,31 +34,34 @@ class Channel:
 
     @classmethod
     def get(cls, channel=None):
-        if channel and channel.channel_id:
-            print("UNO")
-            query = "SELECT channel_id, name, description, server_id FROM discord.channels WHERE channel_id = %s"
-            params = (channel.channel_id,)
-            result = DatabaseConnection.fetch_one(query, params)
-            return cls(**dict(zip(cls._keys, result))) if result else None
+        try:
+            if channel and channel.channel_id:
+                query = "SELECT channel_id, name, description, server_id FROM discord.channels WHERE channel_id = %s"
+                params = (channel.channel_id,)
+                result = DatabaseConnection.fetch_one(query, params)
+                DatabaseConnection.close_connection()
+                return cls(**dict(zip(cls._keys, result))) if result else None
         
-        elif channel and channel.server_id:
-            print("DOS")
-            query = "SELECT channel_id, name, description, server_id FROM discord.channels WHERE server_id = %s"
-            params = (channel.server_id,)
-            results = DatabaseConnection.fetch_all(query, params=params)
-            channels = []
-            if results is not None:
-                for result in results:
-                    channels.append(Channel(
-                        channel_id=result[0],
-                        name=result[1],
-                        description=result[2],
-                        server_id=result[3]
-                    ))
-            return channels
+            elif channel and channel.server_id:
+                query = "SELECT channel_id, name, description, server_id FROM discord.channels WHERE server_id = %s"
+                params = (channel.server_id,)
+                results = DatabaseConnection.fetch_all(query, params=params)
+                channels = []
+                if results is not None:
+                    for result in results:
+                        channels.append(Channel(
+                         channel_id=result[0],
+                            name=result[1],
+                            description=result[2],
+                            server_id=result[3]
+                        ))
+                DatabaseConnection.close_connection()
+                return channels
         
-        else:
-            print("TRES")
-            query = "SELECT channel_id, name, description, server_id FROM discord.channels"
-            results = DatabaseConnection.fetch_all(query)
-            return [cls(**dict(zip(cls._keys, row))) for row in results]
+            else:
+                query = "SELECT channel_id, name, description, server_id FROM discord.channels"
+                results = DatabaseConnection.fetch_all(query)
+                DatabaseConnection.close_connection()
+                return [cls(**dict(zip(cls._keys, row))) for row in results]
+        except Exception as e:
+            raise Exception(e)
