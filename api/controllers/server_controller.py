@@ -28,10 +28,10 @@ class ServerController:
     
     @classmethod
     def get_servers_user(cls):
-        print("Estoy en get_servers_user")
+        #print("Estoy en get_servers_user")
         username = session.get('username')
         user_obj = User.get(User(username=username))
-        print("OBJETO USER: ", user_obj.serialize())
+        #print("OBJETO USER: ", user_obj.serialize())
         server_obj = Server.get_server_user(user_obj)
         
         servers = []

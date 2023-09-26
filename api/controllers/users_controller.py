@@ -10,7 +10,7 @@ class UserController:
     def login(cls):
         """del login trae un objeto json"""
         data = request.json
-        print("Desde login_controller",data)
+        #print("Desde login_controller",data)
         user = User(
             username = data.get('username'),
             password = data.get('password')
@@ -26,10 +26,10 @@ class UserController:
     @classmethod
     def show_profile(cls):
         """va y busca al usuario y trae sus datos"""
-        print("Hola soy show_profile")
+        #print("Hola soy show_profile")
         username = session.get('username')
         user = User.get(User(username = username))
-        print("Desde show_profile", user.__dict__)
+        #print("Desde show_profile", user.__dict__)
 
         if user is None:
             return {"message": "Usuario no encontrado"}, 404
@@ -56,7 +56,7 @@ class UserController:
     @classmethod
     def register(cls):
         data=request.json
-        print("Json desde Formulario--->",data)
+        #print("Json desde Formulario--->",data)
         
         fecha_nac= dt.datetime.fromisoformat(str(data.get("birthdate")))
         data["birthdate"]=fecha_nac

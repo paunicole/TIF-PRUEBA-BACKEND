@@ -76,10 +76,10 @@ class Server:
     @classmethod
     def get_server_user(cls, user = None):
         """Funcion que retorna los servidores de un usuario de la base de datos."""
-        print("llego al model")
-        print("USER Y USER_USER_ID", user, user.user_id)
+        #print("LLEGÓ AL MODEL SERVER")
+        #print(f"USER {user} Y USER_USER_ID {user.user_id}")
         if user and user.user_id:
-            print("ENTRO AL IF")      
+            #print("SI EXISTE USER_ID")      
             query="""
             SELECT
                 servers.server_id, servers.name, servers.description, servers.admin_user
@@ -96,10 +96,10 @@ class Server:
             WHERE
                 users.username = %(username)s;
             """
-            print("USUARIOOO", user.username)
+            #print("USUARIOOO", user.username)
             params = user.__dict__
             results = DatabaseConnection.fetch_all(query, params=params)
-            print("RESULTADOSSS", results)
+            #print("RESULTADOSSS", results)
             servers = []
             if results is not None:
                 for result in results:
@@ -109,5 +109,5 @@ class Server:
                         description=result[2],
                         admin_user=result[3]
                     ))
-            print("SERVERSSS:", servers[0].name)
+            #print("SERVERSSS DE USUARIO:", servers[0].name)
             return servers

@@ -15,7 +15,14 @@ def init_app():
     
     app = Flask(__name__, static_folder = Config.STATIC_FOLDER, template_folder = Config.TEMPLATE_FOLDER)
     
-    CORS(app, supports_credentials=True)
+    CORS(app, supports_credentials=True, resources={
+                                                    r"/users/*": {"origins": "*"},
+                                                    r"/users/profile/*": {"origins": "*"},
+                                                    r"/servers/*": {"origins": "*"},
+                                                    r"/channels/*": {"origins": "*"},
+                                                    r"/messages/*": {"origins": "*"},
+                                                    r"/errors/*": {"origins": "*"}
+                                                    })
 
     app.config.from_object(
         Config
