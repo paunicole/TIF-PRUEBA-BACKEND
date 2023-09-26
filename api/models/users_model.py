@@ -41,7 +41,8 @@ class User:
         return False
     
     @classmethod
-    def get(cls, user):  
+    def get(cls, user):
+        print("GET - USERS MODEL", user.username)
         try:
             if user.exists(user.username):
                 sql="""SELECT user_id, email, username, first_name, last_name, password, birthdate, avatar FROM discord.users
@@ -68,6 +69,7 @@ class User:
 
     @classmethod
     def exists(self, username):
+        print("EXISTS - USERS MODEL", username)
         try:
             sql="SELECT username FROM discord.users "
             results= DatabaseConnection.fetch_all(sql)

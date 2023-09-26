@@ -7,17 +7,14 @@ class ChannelController:
     """Clase de controlador de canales."""
 
     @classmethod
-    def get(cls):
+    def get(cls, server_id):
+        print("VINO POR GET - CHANNEL CONTROLLER")
         channels = []
         # Get canales por servidor
-        if request.args.get('server_id'):
-            channel_obj = Channel(server_id=request.args.get('server_id'))
-            channels = Channel.get(channel_obj)
-        
-        # Get canales todos
-        else:       
-            channels = Channel.get()
-        
+        channel_obj = Channel(server_id=server_id)
+        channels = Channel.get(channel_obj)
+        print("Salio")
+        print("CHANNELS RETORNADO: ", [channel.serialize() for channel in channels])
         return [channel.serialize() for channel in channels], 200
 
     @classmethod
