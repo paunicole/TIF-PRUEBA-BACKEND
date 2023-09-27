@@ -82,8 +82,9 @@ class UserController:
         return {"message":"User actualizado"}, 200
     
     @classmethod
-    def delete(cls):
-        """"""
+    def delete(cls,user_id):
+       """elimina el usuario por el id"""
+       return User.eliminarBy_id(user_id)
 
     #metodos sencillos
     @classmethod

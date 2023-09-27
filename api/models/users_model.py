@@ -150,7 +150,15 @@ class User:
                         avatar = result[7]
                     )
             return None
-
+    @classmethod
+    def eliminarBy_id(cls,id):
+        #DELETE FROM table_name WHERE condition;
+        
+        query="DELETE FROM discord.users WHERE user_id=%s"
+        DatabaseConnection.execute_query(query,params=(id,))
+        return {"message":"Usuario eliminado"},200
+        
+        
     #metodos sencillos part2
     @classmethod
     def getBy_id(self,user):
@@ -253,6 +261,6 @@ class User:
         if User.exists(username):
             query="DELETE FROM discord.users WHERE username=%s"
             DatabaseConnection.execute_query(query,params=(username,))
-            return {"message":"Usuario eliminado"}
+            return {"message":"Usuario eliminado"},200
         else:
             raise UserNotFound(description="El usuario no encontrado")

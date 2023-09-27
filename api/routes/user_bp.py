@@ -11,6 +11,7 @@ user_bp.route('/logout', methods=['GET'])(UserController.logout)
 user_bp.route("/register", methods=['POST'])(UserController.register)
 user_bp.route("/update", methods=['PUT'])(UserController.update)
 user_bp.route('/server_user', methods=['GET'])(UserController.get_servers_user)
+user_bp.route('/delete/<int:user_id>', methods=["DELETE"])(UserController.delete)
 
 #endpoints normales
 user_bp.route('/<int:id>', methods=["GET"])(UserController.getID)
