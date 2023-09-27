@@ -152,6 +152,7 @@ class User:
             return None
 
     #metodos sencillos part2
+    @classmethod
     def getBy_id(self,user):
         sql="SELECT * FROM discord.users WHERE user_id= %s"
         params=user.user_id,

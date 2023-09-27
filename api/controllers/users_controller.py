@@ -10,31 +10,33 @@ class UserController:
     def login(cls):
         """del login trae un objeto json"""
         data = request.json
-        #print("Desde login_controller",data)
+        print("Desde login_controller",data)
         user = User(
             username = data.get('username'),
             password = data.get('password')
         )
         
         #comprueba si existe el usuario, por el nombre y la contraseña
-        if User.is_registered(user):
-            session['username'] = data.get('username')#guarda el nombre_de usuario
+        existe=User.is_registered(user)#returna true si el usuario se encuentra
+        if existe:
+            user=User.get(user)#traemos todos los datos por el id
+            # print("Lohin",user.user_id) 
+            session['user_id'] = user.user_id #guarda el id del usuario
             return user.serialize(), 200
         else:
             return {"message": "Usuario o contraseña incorrectos"}, 401
     
     @classmethod
     def show_profile(cls):
-        """va y busca al usuario y trae sus datos"""
+        """va y busca al usuario por el id de session y trae sus datos"""
         #print("Hola soy show_profile")
-        username = session.get('username')
-        user = User.get(User(username = username))
+        user_id = session.get('user_id')
+        # print("show_profile id-->",user_id) 
+        user=User(user_id = user_id)
+        user = User.getBy_id(user)
         #print("Desde show_profile", user.__dict__)
-
-        if user is None:
-            return {"message": "Usuario no encontrado"}, 404
-        else:
-            return user.serialize(), 200
+        return user
+        
         
     @classmethod
     def logout(cls):
