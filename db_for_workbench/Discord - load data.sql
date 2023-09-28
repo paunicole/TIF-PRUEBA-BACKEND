@@ -12,6 +12,7 @@ INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 1);
 INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 2);
 INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 3);
 INSERT INTO discord.server_user (server_id, user_id) VALUES (1, 4);
+INSERT INTO discord.server_user (server_id, user_id) VALUES (2, 1);
 
 INSERT INTO discord.channels (name, description, server_id) VALUES ('Chat único', 'Para socializar', 1);
 INSERT INTO discord.channels (name, description, server_id) VALUES ('Club de lectura', 'Descripción del canal 1', 1);

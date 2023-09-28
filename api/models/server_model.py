@@ -133,3 +133,12 @@ class Server:
     #             return servers
     #     except Exception as e:
     #         raise Exception(e)
+
+    @classmethod
+    def get_server_by_id(cls, server_id):
+        query="""SELECT COUNT(*) FROM discord.server_user WHERE server_id = %s GROUP BY server_id;"""
+        params = server_id,
+        results = DatabaseConnection.fetch_one(query, params=params)
+        DatabaseConnection.close_connection()
+        
+        return results

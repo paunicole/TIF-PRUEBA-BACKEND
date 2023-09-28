@@ -48,3 +48,10 @@ class ServerController:
             return servers, 200
         else:
             return {'msg':'Únete a un servidor'}, 404
+    
+    @classmethod
+    def get_count(cls, server_id):
+        print("LLEGO A COUNT CONTROLADOR")
+        count = Server.get_server_by_id(server_id)
+        print("CONTADOR: ", count)
+        return {"count": count}, 200
