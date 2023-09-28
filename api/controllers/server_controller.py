@@ -27,6 +27,13 @@ class ServerController:
         return {}, 201
     
     @classmethod
+    def create_server_explore(self):
+        data = request.json
+        Server.create_us_2(server_id=data.get('server_id'), user_id = session.get('user_id'))
+
+        return {}, 201
+    
+    @classmethod
     def get_servers_user(cls):
         username = session.get('username')
         print("VINO POR GET_SERVERS_USER - SERVER CONTROLLER", username)

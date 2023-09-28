@@ -41,6 +41,16 @@ class Server:
             DatabaseConnection.execute_query(sql, params=params)  
         except Exception as e:
             raise Exception(e)
+        
+    @classmethod
+    def create_us_2(cls, server_id, user_id):
+        """Crea registro que relaciona un servidor con un usuario."""
+        try:
+            sql = """INSERT INTO discord.server_user (server_id, user_id) VALUES (%s, %s);"""
+            params = server_id, user_id
+            DatabaseConnection.execute_query(sql, params=params)  
+        except Exception as e:
+            raise Exception(e)
 
     @classmethod
     def delete_server(cls, server):
