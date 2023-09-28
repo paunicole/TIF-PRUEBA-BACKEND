@@ -1,5 +1,5 @@
 from ..models.message_model import Message
-from flask import request
+from flask import request, session
 
 class MessageController:
     """Clase de controlador de mensajes."""
@@ -34,9 +34,12 @@ class MessageController:
 
     @classmethod
     def create_message(self):
+        print("CREATE MESSAGE - CONTROLLER")
         data = request.json
         message = Message(
-            message = data.get('message')
+            message = data.get('message'),
+            user_id = session.get('user_id'),
+            channel_id = data.get('channel_id')
         )
         Message.create_message(message)
 

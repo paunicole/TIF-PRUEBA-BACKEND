@@ -68,9 +68,10 @@ class Message:
 
     @classmethod
     def create_message(cls, message):
-        query = """INSERT INTO discord.messages (message_id, message, user_id, channel_id)
-        VALUES (%s, %s, %s, %s)"""
-        params = message.message_id, message.message, message.user_id, message.channel_id
+        print("CREATE MESSAGE - MODEL:", message.message, message.user_id, message.channel_id)
+        query = """INSERT INTO discord.messages (message, user_id, channel_id)
+        VALUES (%s, %s, %s)"""
+        params = message.message, message.user_id, message.channel_id
         DatabaseConnection.execute_query(query, params=params)
 
     @classmethod

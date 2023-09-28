@@ -21,6 +21,7 @@ class UserController:
         if existe:
             user=User.get(user)#traemos todos los datos por el id
             # print("Lohin",user.user_id) 
+            session['username'] = user.username
             session['user_id'] = user.user_id #guarda el id del usuario
             return user.serialize(), 200
         else:
