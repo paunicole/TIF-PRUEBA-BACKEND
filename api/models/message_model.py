@@ -75,8 +75,11 @@ class Message:
         DatabaseConnection.execute_query(query, params=params)
 
     @classmethod
-    def update_message(cls, message):
-        pass
+    def update_message(cls,message):
+        query="UPDATE discord.messages SET message = %(message)s WHERE message_id=%(message_id)s"
+        params=message.__dict__
+        DatabaseConnection.execute_query(query,params=params)
+        
 
     @classmethod
     def delete_message(cls, message):
@@ -88,3 +91,14 @@ class Message:
             raise ServerError("No se pudo eliminar al mensaje")
         else:
             return {"message": "Mensaje eliminado con exito"}
+        
+    @classmethod
+    def getUserBy_id(cls,idMensaje):
+        """trae todos lo datos del usuario por el message_id"""
+        query="""SELECT users.username FROM messages
+                INNER JOIN users ON messages.user_id=users.user_id
+                WHERE messages.message_id=%s;"""
+        params=idMensaje,
+        user= DatabaseConnection.fetch_one(query,params=params)
+        print("what is-->",user)
+        return User(username=user[0])
